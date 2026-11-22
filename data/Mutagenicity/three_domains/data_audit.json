@@ -1,0 +1,86 @@
+{
+  "archive_sha256": "20c0134bad28fa23a1dd928c6cf5afa6b6f1db10758d8622cfac7245207a95ca",
+  "atom_categories": [
+    0,
+    1,
+    2,
+    3,
+    4,
+    5,
+    6,
+    7,
+    8,
+    9,
+    10,
+    11,
+    12,
+    13
+  ],
+  "domains": {
+    "H": {
+      "atoms_min_max": [
+        4,
+        23
+      ],
+      "class_counts": {
+        "0": 718,
+        "1": 727
+      },
+      "density_min_max": [
+        0.09881422924901186,
+        0.5
+      ],
+      "graphs": 1445,
+      "mean_atoms": 15.934948096885813,
+      "mean_density": 0.14320955205753916,
+      "source_holdout": 289,
+      "source_train": 1156
+    },
+    "L": {
+      "atoms_min_max": [
+        28,
+        417
+      ],
+      "class_counts": {
+        "0": 728,
+        "1": 718
+      },
+      "density_min_max": [
+        0.0011529238147943183,
+        0.0677361853832442
+      ],
+      "graphs": 1446,
+      "mean_atoms": 47.85408022130014,
+      "mean_density": 0.05007892522871228,
+      "source_holdout": 290,
+      "source_train": 1156
+    },
+    "M": {
+      "atoms_min_max": [
+        18,
+        35
+      ],
+      "class_counts": {
+        "0": 955,
+        "1": 491
+      },
+      "density_min_max": [
+        0.0677361853832442,
+        0.09881422924901186
+      ],
+      "graphs": 1446,
+      "mean_atoms": 27.154218533886585,
+      "mean_density": 0.08061005466550558,
+      "source_holdout": 290,
+      "source_train": 1156
+    }
+  },
+  "isomorphism_groups_source_sha256": "9804901cff261facabad654502d053bf4b9ce244477ce151fb26a29323af0fb6",
+  "label_semantics": {
+    "0": "mutagen",
+    "1": "nonmutagen"
+  },
+  "old_four_domain_split_reused": false,
+  "split_uses_labels": false,
+  "status": "passed"
+}

@@ -1,0 +1,14 @@
+__pycache__/
+*.py[cod]
+.venv/
+.env
+*.pem
+*.key
+runs/
+results/
+*.pt
+*.pth
+*.npy
+*.npz
+data/**/raw/
+data/**/processed/
