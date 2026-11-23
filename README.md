@@ -1,6 +1,35 @@
-# DiffGDA++
+# DiffGDA++: Learning Adaptive Evolution Trajectories for Graph Domain Adaptation
 
-Core implementation of **DiffGDA++ (PP)** for cross-domain graph learning. This source release contains semantic-consistent unbalanced transport, coupled node–edge flow matching, and generated-source/target hidden-feature MMD alignment. It supports node classification on citation/airport graphs, point-cloud part segmentation, molecular graph classification, and sparse temporal Arxiv graph adaptation.
+This repository contains the source code for **DiffGDA++: Learning Adaptive Evolution Trajectories for Graph Domain Adaptation**.
+
+## Abstract
+
+Graph domain adaptation (GDA) aims to transfer knowledge from a labeled source graph to an unlabeled target graph, where large differences in feature distributions and graph structures often lead to substantial domain gaps. Existing methods mainly bridge these gaps through discrete graph alignment or stepwise adaptation. However, these approaches make adjustments at fixed steps, making it difficult to faithfully approximate the underlying transformation process of graph semantics and topology. To better capture this process, we first proposed DiffGDA, a continuous-time diffusion framework for GDA, which models the evolution of node attributes and graph structure across domains to facilitate knowledge transfer. Despite its effectiveness, DiffGDA relies on a fixed forward perturbation process and predefined stochastic dynamics to guide graph evolution, limiting its flexibility in adapting to diverse domain shifts and sample-specific variations while causing considerable computational overhead due to multi-step sampling. To address these limitations, we further propose DiffGDA++, an adaptive continuous transport framework for GDA. DiffGDA++ learns data-driven transport trajectories that adapt the evolution of graph representations to different domain shifts. It jointly models cross-domain correspondences and the coupled evolution of graph semantics and topology, supporting flexible knowledge transfer while maintaining consistency between semantic information and relational structures. Specifically, semantic-guided unbalanced optimal transport establishes reliable cross-domain correspondences under distributional mismatch, while conditional flow matching learns adaptive continuous dynamics for the joint evolution of graph semantics and topology. This design avoids repeated stochastic reverse sampling, offering a more efficient approach to continuous graph domain adaptation. Extensive experiments across five graph benchmark families demonstrate that DiffGDA++ achieves strong overall performance compared with existing GDA methods, with notable advantages on structurally complex domains, including molecular graphs and three-dimensional point-cloud graphs.
+
+## Model Architecture
+
+![Overall architecture of DiffGDA++](img/model_architecture.png)
+
+DiffGDA++ adaptively models the joint evolution of graph semantics and structure through a continuous transfer process. This design maintains semantic–structural consistency, supports flexible and efficient knowledge transfer, and produces an evolved graph for downstream tasks.
+
+## Requirements
+
+The reference environment uses the following:
+
+- Python 3.10
+- PyTorch 2.6.0 (CUDA 12.4)
+- `torch-geometric==2.8.1`
+- `faiss-cpu==1.9.0.post1`
+- `numpy<2`
+- `scipy<1.14`
+
+Install PyTorch and its matching PyG extensions first, then install the remaining dependencies listed in [requirements.txt](requirements.txt):
+
+```bash
+python -m pip install -r requirements.txt
+```
+
+Bundled propagation and dataset readers are from [PyGDA](https://github.com/pygda-team/pygda).
 
 ## Method and code map
 
@@ -29,16 +58,6 @@ Core implementation of **DiffGDA++ (PP)** for cross-domain graph learning. This 
 | `configs/<family>/` | Complete scientific configurations for each direction |
 
 `encoder_mmd_weight` is the historical parameter name for **classification-head MMD**, not an encoder-stage MMD objective. Arxiv uses `mmd_weight`. Molecular MMD pools atom hidden features first, so each molecule contributes one feature row. Molecular transport matches molecules first, then samples same-category atoms inside each paired molecule; candidate edges never cross molecular boundaries. Continuous latent evolution does not enforce chemical validity of a newly generated molecule.
-
-## Environment
-
-Reference environment: Python 3.10, PyTorch 2.6.0 (CUDA 12.4), PyG 2.8.1, and FAISS CPU 1.9.0.post1. Install PyTorch and its matching PyG extensions first, then run:
-
-```bash
-python -m pip install -r requirements.txt
-```
-
-Bundled propagation and dataset readers are from [PyGDA](https://github.com/pygda-team/pygda).
 
 ## Data layout
 
@@ -89,15 +108,3 @@ python run.py --family paper --direction A_to_B \
 Original abbreviations: A=ACM, C=Citation, D=DBLP, U=USA, B=BRAZIL, E=EUROPE. Point-cloud abbreviations: A=Adobe, F=FAUST, M=MIT, S=SCAPE. Molecular abbreviations: L/M/H=low/medium/high density. Arxiv A/B/C are temporal domains; the letter meanings are family-specific.
 
 For original, point and molecular diagnostics, add `--smoke --device cpu` with a fresh output path. This reduces encoder/flow/head budgets and must not be used as a paper score. Arxiv `--smoke` reduces updates but still loads full graph data and builds sparse support; it is not a lightweight toy benchmark.
-
-## Ablation controls
-
-- Disable classification-head MMD with `encoder_mmd_weight=0` (`mmd_weight=0` for Arxiv).
-- Dense original/point code supports `flow_state="uncoupled"`: nodes read fixed source edges and edges read initial node states. The molecular and sparse Arxiv core here retains the full method; their separate historical uncoupled patch is not included in this full-method source release.
-- Set `joint_balanced=true` to replace UOT by balanced Sinkhorn. This also affects mass-derived weighting and should be described accordingly.
-
-Experiment schedulers, hyperparameter search jobs, private server configuration, datasets, caches, checkpoint archives and working documents are not part of this release.
-
-## Release validation
-
-CPU reduced-budget end-to-end runs passed for original airport graphs, point clouds and molecular graphs, including checkpoint writes. Sparse Arxiv mathematical checks and the FAISS subprocess test passed. Full-budget benchmark training and a full Arxiv run were not repeated for this source packaging task. The source release is prepared locally for review and has not been published to GitHub.
