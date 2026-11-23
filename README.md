@@ -90,3 +90,5 @@ python run.py --family paper --direction A_to_B \
   --config configs/paper/A_to_B.json --seed 2 --device cuda:0 \
   --output results/paper_A_to_B_seed2
 ```
+
+For the implementation of the conference version **DiffGDA**, please refer to [gxingyu/DiffGDA](https://github.com/gxingyu/DiffGDA).
