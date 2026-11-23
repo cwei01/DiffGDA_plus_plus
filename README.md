@@ -97,7 +97,3 @@ python run.py --family paper --direction A_to_B \
   --config configs/paper/A_to_B.json --seed 2 --device cuda:0 \
   --output results/paper_A_to_B_seed2
 ```
-
-Original abbreviations: A=ACM, C=Citation, D=DBLP, U=USA, B=BRAZIL, E=EUROPE. Point-cloud abbreviations: A=Adobe, F=FAUST, M=MIT, S=SCAPE. Molecular abbreviations: L/M/H=low/medium/high density. Arxiv A/B/C are temporal domains; the letter meanings are family-specific.
-
-For original, point and molecular diagnostics, add `--smoke --device cpu` with a fresh output path. This reduces encoder/flow/head budgets and must not be used as a paper score. Arxiv `--smoke` reduces updates but still loads full graph data and builds sparse support; it is not a lightweight toy benchmark.
