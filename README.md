@@ -33,11 +33,6 @@ Bundled propagation and dataset readers are from [PyGDA](https://github.com/pygd
 
 ## Method and code map
 
-1. **Representation and semantic feedback.** A shared encoder learns from source labels. Transport-derived soft target semantics and reliability feed back into encoder training. Original and point-cloud tasks use the shared propagation encoder; molecules use a two-layer GIN.
-2. **Semantic-consistent transport.** An iterative unbalanced Sinkhorn solver combines feature and semantic costs. Transport rows provide endpoint sampling probabilities and mass-based training weights.
-3. **Joint evolution.** A conditional velocity network jointly evolves latent node states and continuous edge logits. Flow matching trains the velocity field; Heun integration produces transported source features and edge weights.
-4. **Classification and alignment.** A separate classifier is trained on transported source data, optionally anchored to original source data. MMD aligns trainable classifier hidden features of generated source and target samples. Target predictions use the target's original graph.
-
 | File | Responsibility |
 |---|---|
 | `run.py` | One independent training run; no scheduler or hyperparameter search |
@@ -56,8 +51,6 @@ Bundled propagation and dataset readers are from [PyGDA](https://github.com/pygd
 | `gdabench/head_mmd.py` | Sparse classification-head alignment |
 | `gdabench/check.py` | Mathematical checks used before sparse training |
 | `configs/<family>/` | Complete scientific configurations for each direction |
-
-`encoder_mmd_weight` is the historical parameter name for **classification-head MMD**, not an encoder-stage MMD objective. Arxiv uses `mmd_weight`. Molecular MMD pools atom hidden features first, so each molecule contributes one feature row. Molecular transport matches molecules first, then samples same-category atoms inside each paired molecule; candidate edges never cross molecular boundaries. Continuous latent evolution does not enforce chemical validity of a newly generated molecule.
 
 ## Data layout
 
