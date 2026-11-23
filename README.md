@@ -61,23 +61,16 @@ Bundled propagation and dataset readers are from [PyGDA](https://github.com/pygd
 
 ## Data layout
 
-Large datasets, trained models and run outputs are excluded. Prepare the data below, or pass `--data-root /path/to/data`. Small fixed split/protocol manifests are included for identity and split inspection.
+Place datasets under `data/`, or specify a custom directory with `--data-root`:
 
 ```text
 data/
   Citation/{ACMv9,Citationv1,DBLPv7}/{raw,processed}/
   Airport/{USA,BRAZIL,EUROPE}/{raw,processed}/
-  PointSegDA-derived/derived_v1/manifest.json
-  PointSegDA-derived/derived_v1/...  # graph files referenced by the manifest
-  Mutagenicity/three_domains/{graphs.pt,selection.json,data_audit.json,cache_hash.json}
-  GDABench-ArxivTemporal/v1/{protocol.json,A/,B/,C/,evaluation/}
+  PointSegDA-derived/derived_v1/
+  Mutagenicity/three_domains/
+  GDABench-ArxivTemporal/v1/
 ```
-
-Original graph readers use PyGDA's processed/raw layout. Point-cloud loading verifies the fixed derived graph records and checksums; these experiments use 1,024-node graphs and eight part classes. `experiment/pointseg_data.py` contains coordinate normalization, sampling and graph-construction functions. Supplying arbitrary newly sampled clouds does not reproduce the fixed benchmark instances.
-
-Mutagenicity contains 4,337 molecular graphs with 14 atom categories and binary graph labels. Fixed low/medium/high-density domains contain 1,446/1,446/1,445 graphs. Source training uses records marked `source_role=train`, while target adaptation uses the entire target domain with graph labels removed. `selection.json` is the authoritative split. The historical four-domain split is not used. `prepare_molecular.py` rebuilds `graphs.pt` from TU raw files and the included fixed selection rather than inventing a new split. Run `python prepare_molecular.py --raw /path/to/extracted/Mutagenicity --output data/Mutagenicity/three_domains/graphs.pt`. The output must not already exist.
-
-Arxiv domain directories contain `features.npy`, `adjacency.npz`, `pairs.npy`, `ids.npy`, `roots.npy`, and source-label files where required by `gdabench/data.py`; evaluation labels reside separately. Follow `protocol.json` and its hashes. This release expects the prepared temporal benchmark; it does not include a raw-OGB-to-temporal conversion pipeline or a hosted data archive. Data must be supplied separately before benchmark training.
 
 ## Run one direction
 
