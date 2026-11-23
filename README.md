@@ -52,7 +52,7 @@ Bundled propagation and dataset readers are from [PyGDA](https://github.com/pygd
 | `gdabench/check.py` | Mathematical checks used before sparse training |
 | `configs/<family>/` | Complete scientific configurations for each direction |
 
-## Data layout
+## Dataset
 
 Place datasets under `data/`, or specify a custom directory with `--data-root`:
 
@@ -65,7 +65,7 @@ data/
   GDABench-ArxivTemporal/v1/
 ```
 
-## Run one direction
+## How to Run
 
 Run from the repository root. Output directories must be new. The configuration controls scientific hyperparameters; the command supplies family, direction, seed, device and output location.
 
